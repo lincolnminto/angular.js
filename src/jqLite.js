@@ -83,6 +83,16 @@
  * - [`val()`](http://api.jquery.com/val/)
  * - [`wrap()`](http://api.jquery.com/wrap/)
  *
+ * jqLite also provides a method restoring pre-1.8 insecure treatment of XHTML-like tags
+ * that makes input like `<div /><span />` turned to `<div></div><span></span>` instead of
+ * `<div><span></span></div>` like version 1.8 & newer do:
+ * ```js
+ * angular.UNSAFE_restoreLegacyJqLiteXHTMLReplacement();
+ * ```
+ * Note that this only patches jqLite. If you use jQuery 3.5.0 or newer, please read
+ * [jQuery 3.5 upgrade guide](https://jquery.com/upgrade-guide/3.5/) for more details
+ * about the workarounds.
+ *
  * ## jQuery/jqLite Extras
  * Angular also provides the following additional methods and events to both jQuery and jqLite:
  *
@@ -170,6 +180,22 @@ wrapMap.optgroup = wrapMap.option;
 wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
 wrapMap.th = wrapMap.td;
 
+// Support: IE <10 only
+// IE 9 requires an option wrapper & it needs to have the whole table structure
+// set up up front; assigning `"<td></td>"` to `tr.innerHTML` doesn't work, etc.
+var wrapMapIE9 = {
+  option: [1, '<select multiple="multiple">', '</select>'],
+  _default: [0, '', '']
+};
+
+for (var key in wrapMap) {
+  var wrapMapValueClosing = wrapMap[key];
+  var wrapMapValue = wrapMapValueClosing.slice().reverse();
+  wrapMapIE9[key] = [wrapMapValue.length, '<' + wrapMapValue.join('><') + '>', '</' + wrapMapValueClosing.join('></') + '>'];
+}
+
+wrapMapIE9.optgroup = wrapMapIE9.option;
+
 
 function jqLiteIsTextNode(html) {
   return !HTML_REGEXP.test(html);
@@ -183,7 +209,7 @@ function jqLiteAcceptsData(node) {
 }
 
 function jqLiteBuildFragment(html, context) {
-  var tmp, tag, wrap,
+  var tmp, tag, wrap, finalHtml,
       fragment = context.createDocumentFragment(),
       nodes = [], i;
 
@@ -195,7 +221,11 @@ function jqLiteBuildFragment(html, context) {
     tmp = tmp || fragment.appendChild(context.createElement("div"));
     tag = (TAG_NAME_REGEXP.exec(html) || ["", ""])[1].toLowerCase();
     wrap = wrapMap[tag] || wrapMap._default;
-    tmp.innerHTML = wrap[1] + html.replace(XHTML_TAG_REGEXP, "<$1></$2>") + wrap[2];
+
+    finalHtml = JQLite.legacyXHTMLReplacement ?
+      html.replace(XHTML_TAG_REGEXP, '<$1></$2>') :
+      html;
+    tmp.innerHTML = wrap[1] + finalHtml + wrap[2];
 
     // Descend through wrappers to the right content
     i = wrap[0];
