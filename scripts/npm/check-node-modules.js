@@ -17,7 +17,9 @@ _main();
 
 // Functions - Definitions
 function _main() {
+  console.log('process.argv.indexOf(--purge) ', process.argv.indexOf('--purge'))
   var purgeIfStale = process.argv.indexOf('--purge') !== -1;
+  console.log('purgeIfStale ', purgeIfStale)
 
   process.chdir(PROJECT_ROOT);
   checkNodeModules(purgeIfStale);
@@ -25,8 +27,9 @@ function _main() {
 
 function checkNodeModules(purgeIfStale) {
   var nodeModulesOk = compareMarkerFiles(NPM_SHRINKWRAP_FILE, NPM_SHRINKWRAP_CACHED_FILE);
+  console.log('nodeModulesOk ', nodeModulesOk)
 
-  if (nodeModulesOk) {
+  if (!nodeModulesOk) {
     console.log(':-) npm dependencies are looking good!');
   } else if (purgeIfStale) {
     console.log(':-( npm dependencies are stale or in an unknown state!');
