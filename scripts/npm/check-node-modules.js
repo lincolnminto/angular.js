@@ -10,16 +10,14 @@ var path = require('path');
 var PROJECT_ROOT = path.join(__dirname, '../../');
 var NODE_MODULES_DIR = 'node_modules';
 var NPM_SHRINKWRAP_FILE = 'npm-shrinkwrap.json';
-var NPM_SHRINKWRAP_CACHED_FILE = NODE_MODULES_DIR + '/npm-shrinkwrap.cached.json';
+var NPM_SHRINKWRAP_CACHED_FILE = 'npm-shrinkwrap.cached.json';
 
 // Run
 _main();
 
 // Functions - Definitions
 function _main() {
-  console.log('process.argv.indexOf(--purge) ', process.argv.indexOf('--purge'))
   var purgeIfStale = process.argv.indexOf('--purge') !== -1;
-  console.log('purgeIfStale ', purgeIfStale)
 
   process.chdir(PROJECT_ROOT);
   checkNodeModules(purgeIfStale);
@@ -27,9 +25,8 @@ function _main() {
 
 function checkNodeModules(purgeIfStale) {
   var nodeModulesOk = compareMarkerFiles(NPM_SHRINKWRAP_FILE, NPM_SHRINKWRAP_CACHED_FILE);
-  console.log('nodeModulesOk ', nodeModulesOk)
 
-  if (!nodeModulesOk) {
+  if (nodeModulesOk) {
     console.log(':-) npm dependencies are looking good!');
   } else if (purgeIfStale) {
     console.log(':-( npm dependencies are stale or in an unknown state!');
