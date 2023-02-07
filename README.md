@@ -33,7 +33,12 @@ Error: A fatal exception has occurred. Program will exit.
 Unrecognized option: -d32
 
 
+## For windows
 
+  Install node version 16.10.0 (with npm version 7.24.0)
+  Install grunt-cli : npm install -g grunt-cli@0.1.13
+  Install all dependencies: npm i
+  Run: grunt package
 
 
 
