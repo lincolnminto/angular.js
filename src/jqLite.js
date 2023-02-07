@@ -134,7 +134,7 @@
 JQLite.expando = 'ng339';
 
 var jqCache = JQLite.cache = {},
-    jqId = 1;
+  jqId = 1;
 
 /*
  * !!! This is an undocumented "private" function !!!
@@ -158,7 +158,7 @@ var jqLiteMinErr = minErr('jqLite');
  * @param name Name to normalize
  */
 function cssKebabToCamel(name) {
-    return kebabToCamel(name.replace(MS_HACK_REGEXP, 'ms-'));
+  return kebabToCamel(name.replace(MS_HACK_REGEXP, 'ms-'));
 }
 
 function fnCamelCaseReplace(all, letter) {
@@ -230,8 +230,8 @@ function jqLiteHasData(node) {
 
 function jqLiteBuildFragment(html, context) {
   var tmp, tag, wrap, finalHtml,
-      fragment = context.createDocumentFragment(),
-      nodes = [], i;
+    fragment = context.createDocumentFragment(),
+    nodes = [], i;
 
   if (jqLiteIsTextNode(html)) {
     // Convert non-html into a text node
@@ -434,7 +434,7 @@ function jqLiteRemoveData(element, name) {
 
 function jqLiteExpandoStore(element, createIfNecessary) {
   var expandoId = element.ng339,
-      expandoStore = expandoId && jqCache[expandoId];
+    expandoStore = expandoId && jqCache[expandoId];
 
   if (createIfNecessary && !expandoStore) {
     element.ng339 = expandoId = jqNextId();
@@ -477,13 +477,13 @@ function jqLiteData(element, key, value) {
 function jqLiteHasClass(element, selector) {
   if (!element.getAttribute) return false;
   return ((' ' + (element.getAttribute('class') || '') + ' ').replace(/[\n\t]/g, ' ').
-      indexOf(' ' + selector + ' ') > -1);
+  indexOf(' ' + selector + ' ') > -1);
 }
 
 function jqLiteRemoveClass(element, cssClasses) {
   if (cssClasses && element.setAttribute) {
     var existingClasses = (' ' + (element.getAttribute('class') || '') + ' ')
-                            .replace(/[\n\t]/g, ' ');
+      .replace(/[\n\t]/g, ' ');
     var newClasses = existingClasses;
 
     forEach(cssClasses.split(' '), function(cssClass) {
@@ -500,7 +500,7 @@ function jqLiteRemoveClass(element, cssClasses) {
 function jqLiteAddClass(element, cssClasses) {
   if (cssClasses && element.setAttribute) {
     var existingClasses = (' ' + (element.getAttribute('class') || '') + ' ')
-                            .replace(/[\n\t]/g, ' ');
+      .replace(/[\n\t]/g, ' ');
     var newClasses = existingClasses;
 
     forEach(cssClasses.split(' '), function(cssClass) {
@@ -627,7 +627,7 @@ var JQLitePrototype = JQLite.prototype = {
   },
 
   eq: function(index) {
-      return (index >= 0) ? jqLite(this[index]) : jqLite(this[this.length + index]);
+    return (index >= 0) ? jqLite(this[index]) : jqLite(this[this.length + index]);
   },
 
   length: 0,
@@ -810,7 +810,7 @@ forEach({
     // in a way that survives minification.
     // jqLiteEmpty takes no arguments but is a setter.
     if (fn !== jqLiteEmpty &&
-        (isUndefined((fn.length === 2 && (fn !== jqLiteHasClass && fn !== jqLiteController)) ? arg1 : arg2))) {
+      (isUndefined((fn.length === 2 && (fn !== jqLiteHasClass && fn !== jqLiteController)) ? arg1 : arg2))) {
       if (isObject(arg1)) {
 
         // we are a write, but the object properties are the key/values
