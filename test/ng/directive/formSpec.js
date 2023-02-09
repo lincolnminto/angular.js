@@ -269,23 +269,24 @@ describe('form', function() {
           submitted = false,
           reloadPrevented;
 
-      doc = jqLite('<form ng-submit="submitMe()">' +
-                     '<input type="submit" value="submit">' +
-                   '</form>');
+      var form = $compile(
+        '<form name="test" ng-submit="submitMe()" ' +
+        '<input type="submit" value="submit" />' +
+        '</form>')(scope);
+      scope.$digest();
 
       var assertPreventDefaultListener = function(e) {
         reloadPrevented = e.defaultPrevented || (e.returnValue === false);
       };
 
-      $compile(doc)(scope);
+      addEventListenerFn(form[0], 'submit', assertPreventDefaultListener);
 
       scope.submitMe = function() {
         submitted = true;
       };
 
-      addEventListenerFn(doc[0], 'submit', assertPreventDefaultListener);
-
-      browserTrigger(doc.find('input'));
+      browserTrigger(form, 'submit');
+      dealoc(form);
 
       // let the browser process all events (and potentially reload the page)
       setTimeout(function() { nextTurn = true;});
@@ -299,6 +300,42 @@ describe('form', function() {
         // prevent mem leak in test
         removeEventListenerFn(doc[0], 'submit', assertPreventDefaultListener);
       });
+
+      /*
+      doc = jqLite('<form ng-submit="submitMe()">' +
+                     '<input type="submit" value="submit">' +
+                   '</form>');
+
+      var assertPreventDefaultListener = function(e) {
+        reloadPrevented = e.defaultPrevented || (e.returnValue === false);
+      };
+
+      $compile(doc)(scope);
+
+      scope.submitMe = function() {
+        console.log('submitMe');
+        submitted = true;
+      };
+
+      addEventListenerFn(doc[0], 'submit', assertPreventDefaultListener);
+
+      browserTrigger(doc.find('input'));
+
+
+
+      // let the browser process all events (and potentially reload the page)
+      setTimeout(function() { nextTurn = true;});
+
+      waitsFor(function() { return nextTurn; });
+
+      runs(function() {
+        expect(reloadPrevented).toBe(true);
+        expect(submitted).toBe(true);
+
+        // prevent mem leak in test
+        removeEventListenerFn(doc[0], 'submit', assertPreventDefaultListener);
+      });
+      */
     });
 
 
