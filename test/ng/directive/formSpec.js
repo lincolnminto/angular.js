@@ -300,44 +300,7 @@ describe('form', function() {
         // prevent mem leak in test
         removeEventListenerFn(doc[0], 'submit', assertPreventDefaultListener);
       });
-
-      /*
-      doc = jqLite('<form ng-submit="submitMe()">' +
-                     '<input type="submit" value="submit">' +
-                   '</form>');
-
-      var assertPreventDefaultListener = function(e) {
-        reloadPrevented = e.defaultPrevented || (e.returnValue === false);
-      };
-
-      $compile(doc)(scope);
-
-      scope.submitMe = function() {
-        console.log('submitMe');
-        submitted = true;
-      };
-
-      addEventListenerFn(doc[0], 'submit', assertPreventDefaultListener);
-
-      browserTrigger(doc.find('input'));
-
-
-
-      // let the browser process all events (and potentially reload the page)
-      setTimeout(function() { nextTurn = true;});
-
-      waitsFor(function() { return nextTurn; });
-
-      runs(function() {
-        expect(reloadPrevented).toBe(true);
-        expect(submitted).toBe(true);
-
-        // prevent mem leak in test
-        removeEventListenerFn(doc[0], 'submit', assertPreventDefaultListener);
-      });
-      */
     });
-
 
     it('should prevent the default when the form is destroyed by a submission via a click event',
         inject(function($timeout) {

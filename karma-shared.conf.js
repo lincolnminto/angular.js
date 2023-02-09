@@ -162,8 +162,6 @@ module.exports = function(config, specificOptions) {
     '/someSanitizedUrl',
     '/{{testUrl}}'
   ];
-  // var log4js = require('./node_modules/karma/node_modules/log4js');
-  // var layouts = require('./node_modules/karma/node_modules/log4js/lib/layouts');
 
   var log4js = require('./node_modules/log4js');
   var layouts = require('./node_modules/log4js/lib/layouts');
