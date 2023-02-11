@@ -625,8 +625,10 @@ function $SceDelegateProvider() {
  * <file name="protractor.js" type="protractor">
  *   describe('SCE doc demo', function() {
  *     it('should sanitize untrusted values', function() {
- *       expect(element.all(by.css('.htmlComment')).first().getInnerHtml())
- *           .toBe('<span>Is <i>anyone</i> reading this?</span>');
+ *      const htmlComment = browser.executeScript("return arguments[0].innerHTML;", element.all(by.css('.htmlComment')).first());
+ *       htmlComment.then(function (value){
+ *       expect(value).toBe('<span>Is <i>anyone</i> reading this?</span>');
+ *     });
  *     });
  *
  *     it('should NOT sanitize explicitly trusted values', function() {
