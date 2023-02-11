@@ -13,7 +13,10 @@
   "engineStrict": true,
   "scripts": {
     "preinstall": "node scripts/npm/check-node-modules.js --purge",
-    "postinstall": "node scripts/npm/copy-npm-shrinkwrap.js"
+    "postinstall": "node scripts/npm/copy-npm-shrinkwrap.js",
+    "build:app": "grunt package",
+    "test:app": "grunt test:unit",
+    "e2e": "grunt package && grunt test:e2e"
   },
   "devDependencies": {
     "angular-benchpress": "0.2.2",

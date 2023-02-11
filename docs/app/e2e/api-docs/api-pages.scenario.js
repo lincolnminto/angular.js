@@ -29,15 +29,13 @@ describe("doc.angularjs.org", function() {
       // Ensure that the page is loaded before trying to switch frames.
       browser.waitForAngular();
 
-      /*
-      browser.switchTo().frame('example-input-directive');
+      browser.switchTo().frame(0).then();
 
       var nameInput = element(by.model('user.name'));
       nameInput.sendKeys('!!!');
 
       var code = element.all(by.css('tt')).first();
       expect(code.getText()).toContain('guest!!!');
-      */
     });
 
     it("should trim indentation from code blocks", function() {

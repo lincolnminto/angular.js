@@ -149,7 +149,7 @@ var $sanitizeMinErr = angular.$$minErr('$sanitize');
         expect(value).toBe('new <b onclick="alert(1)">text</b>');
        });
 
-       const htmlComment2 = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-default div')));
+       var htmlComment2 = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-default div')));
        htmlComment2.then(function (value){
         expect(value).toBe("new &lt;b onclick=\"alert(1)\"&gt;text&lt;/b&gt;");
        });
