@@ -1,4 +1,5 @@
-AngularJS [![Build Status](https://travis-ci.org/angular/angular.js.svg?branch=master)](https://travis-ci.org/angular/angular.js)
+
+AngularJS
 =========
 
 AngularJS lets you write client-side web applications as if you had a smarter browser.  It lets you
@@ -8,7 +9,7 @@ synchronizes data from your UI (view) with your JavaScript objects (model) throu
 binding. To help you structure your application better and make it easy to test, AngularJS teaches
 the browser how to do dependency injection and inversion of control.
 
-Oh yeah and it helps with server-side communication, taming async callbacks with promises and 
+Oh yeah and it helps with server-side communication, taming async callbacks with promises and
 deferreds. It also makes client-side navigation and deeplinking with hashbang urls or HTML5 pushState a
 piece of cake. Best of all?? It makes development fun!
 
@@ -20,14 +21,32 @@ piece of cake. Best of all?? It makes development fun!
 * Dashboard: http://dashboard.angularjs.org
 
 Building AngularJS
----------
+=========
 [Once you have your environment setup](http://docs.angularjs.org/misc/contribute) just run:
 
     grunt package
 
+Building AngularJS v1.3.x
+=========
+
+Fork from angularjs for Bonitasoft.
+To make branch v1.3.x working, we need to:
+
+1. Git checkout v1.3.x
+
+2. Install node version 16.10.0 (with npm version 7.24.0)
+
+3. Install tools and dependencies
+   - Run: npm install -g grunt-cli@0.1.13
+   - Install python2.7.18 (https://tecadmin.net/install-python-2-7-on-ubuntu-and-linuxmint/)
+   - Run: npm i
+
+4. Build Project
+   - Run: grunt package
+
 
 Running Tests
--------------
+=========
 To execute all unit tests, use:
 
     grunt test:unit
