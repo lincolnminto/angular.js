@@ -114,13 +114,13 @@
 JQLite.expando = 'ng339';
 
 var jqCache = JQLite.cache = {},
-    jqId = 1,
-    addEventListenerFn = function(element, type, fn) {
-      element.addEventListener(type, fn, false);
-    },
-    removeEventListenerFn = function(element, type, fn) {
-      element.removeEventListener(type, fn, false);
-    };
+  jqId = 1,
+  addEventListenerFn = function(element, type, fn) {
+    element.addEventListener(type, fn, false);
+  },
+  removeEventListenerFn = function(element, type, fn) {
+    element.removeEventListener(type, fn, false);
+  };
 
 /*
  * !!! This is an undocumented "private" function !!!
@@ -145,10 +145,10 @@ var jqLiteMinErr = minErr('jqLite');
  */
 function camelCase(name) {
   return name.
-    replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
-      return offset ? letter.toUpperCase() : letter;
-    }).
-    replace(MOZ_HACK_REGEXP, 'Moz$1');
+  replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
+    return offset ? letter.toUpperCase() : letter;
+  }).
+  replace(MOZ_HACK_REGEXP, 'Moz$1');
 }
 
 var SINGLE_TAG_REGEXP = /^<(\w+)\s*\/?>(?:<\/\1>|)$/;
@@ -388,7 +388,7 @@ function jqLiteRemoveData(element, name) {
 
 function jqLiteExpandoStore(element, createIfNecessary) {
   var expandoId = element.ng339,
-      expandoStore = expandoId && jqCache[expandoId];
+    expandoStore = expandoId && jqCache[expandoId];
 
   if (createIfNecessary && !expandoStore) {
     element.ng339 = expandoId = jqNextId();
@@ -428,14 +428,14 @@ function jqLiteData(element, key, value) {
 function jqLiteHasClass(element, selector) {
   if (!element.getAttribute) return false;
   return ((" " + (element.getAttribute('class') || '') + " ").replace(/[\n\t]/g, " ").
-      indexOf(" " + selector + " ") > -1);
+  indexOf(" " + selector + " ") > -1);
 }
 
 function jqLiteRemoveClass(element, cssClasses) {
   if (cssClasses && element.setAttribute) {
     forEach(cssClasses.split(' '), function(cssClass) {
       element.setAttribute('class', trim(
-          (" " + (element.getAttribute('class') || '') + " ")
+        (" " + (element.getAttribute('class') || '') + " ")
           .replace(/[\n\t]/g, " ")
           .replace(" " + trim(cssClass) + " ", " "))
       );
@@ -446,7 +446,7 @@ function jqLiteRemoveClass(element, cssClasses) {
 function jqLiteAddClass(element, cssClasses) {
   if (cssClasses && element.setAttribute) {
     var existingClasses = (' ' + (element.getAttribute('class') || '') + ' ')
-                            .replace(/[\n\t]/g, " ");
+      .replace(/[\n\t]/g, " ");
 
     forEach(cssClasses.split(' '), function(cssClass) {
       cssClass = trim(cssClass);
@@ -568,7 +568,7 @@ var JQLitePrototype = JQLite.prototype = {
   },
 
   eq: function(index) {
-      return (index >= 0) ? jqLite(this[index]) : jqLite(this[this.length + index]);
+    return (index >= 0) ? jqLite(this[index]) : jqLite(this[this.length + index]);
   },
 
   length: 0,
@@ -671,9 +671,9 @@ forEach({
         }
       } else {
         return (element[name] ||
-                 (element.attributes.getNamedItem(name) || noop).specified)
-               ? lowercasedName
-               : undefined;
+          (element.attributes.getNamedItem(name) || noop).specified)
+          ? lowercasedName
+          : undefined;
       }
     } else if (isDefined(value)) {
       element.setAttribute(name, value);
@@ -744,7 +744,7 @@ forEach({
     // in a way that survives minification.
     // jqLiteEmpty takes no arguments but is a setter.
     if (fn !== jqLiteEmpty &&
-        (((fn.length == 2 && (fn !== jqLiteHasClass && fn !== jqLiteController)) ? arg1 : arg2) === undefined)) {
+      (((fn.length == 2 && (fn !== jqLiteHasClass && fn !== jqLiteController)) ? arg1 : arg2) === undefined)) {
       if (isObject(arg1)) {
 
         // we are a write, but the object properties are the key/values
