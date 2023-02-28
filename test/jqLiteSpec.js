@@ -177,18 +177,17 @@ describe('jqLite', function() {
         '<img alt="<x" title="" src="/><img src=url404 onerror=xss(9)>">',
         '<noscript/><img src=url404 onerror=xss(10)>',
         '<noembed><noembed/><img src=url404 onerror=xss(11)>',
-
         '<option><style></option></select><img src=url404 onerror=xss(12)></style>'
       ], function(htmlString, index) {
         var element = jqLite('<div></div>');
         container.append(element);
         element.append(jqLite(htmlString));
-        console.log('element ', element);
 
-        window.setTimeout(function() {
-          // expect(window.xss).not.toHaveBeenCalledWith(index);
-          // donePartial();
-        }, 1000);
+        console.log('angular element === ');
+        // window.setTimeout(function() {
+        //   expect(window.xss).not.toHaveBeenCalledWith(index);
+        //   donePartial();
+        // }, 1000);
       });
     });
 
