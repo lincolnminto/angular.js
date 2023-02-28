@@ -227,19 +227,14 @@ function jqLiteBuildFragment(html, context) {
         tmp.appendChild(window.document.createElement(wrap[i]));
         tmp = tmp.firstChild;
       }
-
-      console.log('finalHtml ', finalHtml);
       tmp.innerHTML = finalHtml;
-      console.log('tmp.innerHTML ', tmp.innerHTML);
     }
-    // console.log('tmp.childNodes ', tmp.childNodes);
 
     nodes = concat(nodes, tmp.childNodes);
 
     tmp = fragment.firstChild;
     tmp.textContent = '';
   }
-  // console.log('nodes ', nodes);
 
   // Remove wrapper from fragment
   fragment.textContent = '';
@@ -248,7 +243,6 @@ function jqLiteBuildFragment(html, context) {
     fragment.appendChild(node);
   });
 
-  // console.log('fragment ', fragment.textContent); // <style>
   return fragment;
 }
 
