@@ -99,33 +99,47 @@ var $sanitizeMinErr = angular.$$minErr('$sanitize');
  </file>
  <file name="protractor.js" type="protractor">
  it('should sanitize the html snippet by default', function() {
-       expect(element(by.css('#bind-html-with-sanitize div')).getInnerHtml()).
-         toBe('<p>an html\n<em>click here</em>\nsnippet</p>');
+       var htmlComment = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-html-with-sanitize div')));
+       htmlComment.then(function (value){
+          expect(value).toBe('<p>an html\n<em>click here</em>\nsnippet</p>');
+       });
      });
 
  it('should inline raw snippet if bound to a trusted value', function() {
-       expect(element(by.css('#bind-html-with-trust div')).getInnerHtml()).
-         toBe("<p style=\"color:blue\">an html\n" +
-              "<em onmouseover=\"this.textContent='PWN3D!'\">click here</em>\n" +
-              "snippet</p>");
+        var htmlComment = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-html-with-trust div')));
+        htmlComment.then(function (value){
+          expect(value).toBe("<p style=\"color:blue\">an html\n" +
+            "<em onmouseover=\"this.textContent='PWN3D!'\">click here</em>\n" +
+            "snippet</p>");
+        });
      });
 
  it('should escape snippet without any filter', function() {
-       expect(element(by.css('#bind-default div')).getInnerHtml()).
-         toBe("&lt;p style=\"color:blue\"&gt;an html\n" +
-              "&lt;em onmouseover=\"this.textContent='PWN3D!'\"&gt;click here&lt;/em&gt;\n" +
-              "snippet&lt;/p&gt;");
+       var htmlComment = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-default div')));
+       htmlComment.then(function (value){
+          expect(value).toBe("&lt;p style=\"color:blue\"&gt;an html\n" +
+            "&lt;em onmouseover=\"this.textContent='PWN3D!'\"&gt;click here&lt;/em&gt;\n" +
+            "snippet&lt;/p&gt;");
+       });
      });
 
  it('should update', function() {
        element(by.model('snippet')).clear();
        element(by.model('snippet')).sendKeys('new <b onclick="alert(1)">text</b>');
-       expect(element(by.css('#bind-html-with-sanitize div')).getInnerHtml()).
-         toBe('new <b>text</b>');
-       expect(element(by.css('#bind-html-with-trust div')).getInnerHtml()).toBe(
-         'new <b onclick="alert(1)">text</b>');
-       expect(element(by.css('#bind-default div')).getInnerHtml()).toBe(
-         "new &lt;b onclick=\"alert(1)\"&gt;text&lt;/b&gt;");
+       var htmlComment0 = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-html-with-sanitize div')));
+       htmlComment0.then(function (value){
+        expect(value).toBe('new <b>text</b>');
+       });
+
+       var htmlComment1 = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-html-with-trust div')));
+       htmlComment1.then(function (value){
+        expect(value).toBe('new <b onclick="alert(1)">text</b>');
+       });
+
+       var htmlComment2 = browser.executeScript("return arguments[0].innerHTML;", element(by.css('#bind-default div')));
+       htmlComment2.then(function (value){
+        expect(value).toBe("new &lt;b onclick=\"alert(1)\"&gt;text&lt;/b&gt;");
+       });
      });
  </file>
  </example>
@@ -142,13 +156,13 @@ var $sanitizeMinErr = angular.$$minErr('$sanitize');
 function $SanitizeProvider() {
   var svgEnabled = false;
 
-  this.$get = ['$$sanitizeUri', function($$sanitizeUri) {
+  this.$get = ['$$sanitizeUri', function ($$sanitizeUri) {
     if (svgEnabled) {
       angular.extend(validElements, svgElements);
     }
-    return function(html) {
+    return function (html) {
       var buf = [];
-      htmlParser(html, htmlSanitizeWriter(buf, function(uri, isImage) {
+      htmlParser(html, htmlSanitizeWriter(buf, function (uri, isImage) {
         return !/^unsafe:/.test($$sanitizeUri(uri, isImage));
       }));
       return buf.join('');
@@ -186,7 +200,7 @@ function $SanitizeProvider() {
    * @returns {boolean|ng.$sanitizeProvider} Returns the currently configured value if called
    *    without an argument or self for chaining otherwise.
    */
-  this.enableSvg = function(enableSvg) {
+  this.enableSvg = function (enableSvg) {
     if (angular.isDefined(enableSvg)) {
       svgEnabled = enableSvg;
       return this;
@@ -294,7 +308,7 @@ function toMap(str, lowercaseKeys) {
 }
 
 var inertBodyElement;
-(function(window) {
+(function (window) {
   var doc;
   if (window.document && window.document.implementation) {
     doc = window.document.implementation.createHTMLDocument("inert");
@@ -405,18 +419,13 @@ function attrToMap(attrs) {
  * @returns {string} escaped text
  */
 function encodeEntities(value) {
-  return value.
-  replace(/&/g, '&amp;').
-  replace(SURROGATE_PAIR_REGEXP, function(value) {
+  return value.replace(/&/g, '&amp;').replace(SURROGATE_PAIR_REGEXP, function (value) {
     var hi = value.charCodeAt(0);
     var low = value.charCodeAt(1);
     return '&#' + (((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000) + ';';
-  }).
-  replace(NON_ALPHANUMERIC_REGEXP, function(value) {
+  }).replace(NON_ALPHANUMERIC_REGEXP, function (value) {
     return '&#' + value.charCodeAt(0) + ';';
-  }).
-  replace(/</g, '&lt;').
-  replace(/>/g, '&gt;');
+  }).replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 /**
@@ -433,7 +442,7 @@ function htmlSanitizeWriter(buf, uriValidator) {
   var ignoreCurrentElement = false;
   var out = angular.bind(buf, buf.push);
   return {
-    start: function(tag, attrs) {
+    start: function (tag, attrs) {
       tag = angular.lowercase(tag);
       if (!ignoreCurrentElement && blockedElements[tag]) {
         ignoreCurrentElement = tag;
@@ -441,8 +450,8 @@ function htmlSanitizeWriter(buf, uriValidator) {
       if (!ignoreCurrentElement && validElements[tag] === true) {
         out('<');
         out(tag);
-        angular.forEach(attrs, function(value, key) {
-          var lkey=angular.lowercase(key);
+        angular.forEach(attrs, function (value, key) {
+          var lkey = angular.lowercase(key);
           var isImage = (tag === 'img' && lkey === 'src') || (lkey === 'background');
           if (validAttrs[lkey] === true &&
             (uriAttrs[lkey] !== true || uriValidator(value, isImage))) {
@@ -456,7 +465,7 @@ function htmlSanitizeWriter(buf, uriValidator) {
         out('>');
       }
     },
-    end: function(tag) {
+    end: function (tag) {
       tag = angular.lowercase(tag);
       if (!ignoreCurrentElement && validElements[tag] === true && voidElements[tag] !== true) {
         out('</');
@@ -467,7 +476,7 @@ function htmlSanitizeWriter(buf, uriValidator) {
         ignoreCurrentElement = false;
       }
     },
-    chars: function(chars) {
+    chars: function (chars) {
       if (!ignoreCurrentElement) {
         out(encodeEntities(chars));
       }
@@ -507,7 +516,6 @@ function stripCustomNsAttrs(node) {
     stripCustomNsAttrs(nextNode);
   }
 }
-
 
 
 // define ngSanitize module and register $sanitize service
