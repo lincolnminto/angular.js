@@ -60,7 +60,8 @@ function $$SanitizeUriProvider() {
   this.$get = function() {
     return function sanitizeUri(uri, isImage) {
       var regex = isImage ? imgSrcSanitizationWhitelist : aHrefSanitizationWhitelist;
-      var normalizedVal = urlResolve(uri && uri.trim()).href;
+      var normalizedVal;
+      normalizedVal = urlResolve(uri).href;
       if (normalizedVal !== '' && !normalizedVal.match(regex)) {
         return 'unsafe:' + normalizedVal;
       }
