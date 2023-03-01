@@ -184,10 +184,10 @@ describe('jqLite', function() {
         element.append(jqLite(htmlString));
 
         console.log('angular element === ');
-        // window.setTimeout(function() {
-        //   expect(window.xss).not.toHaveBeenCalledWith(index);
-        //   donePartial();
-        // }, 1000);
+        window.setTimeout(function() {
+          expect(window.xss).not.toHaveBeenCalledWith(index);
+          donePartial();
+        }, 1000);
       });
     });
 
